@@ -10,23 +10,11 @@ public static class HostingExtensions
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllers();
-        builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
-        builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddGoogle(options =>
-            {
-                options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? string.Empty;
-                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? string.Empty;
-                options.CallbackPath = "/auth/google/callback"; // Đảm bảo giống trên Google Cloud
-                options.SaveTokens = true; // Lưu token để sử dụng sau
-            });
-        builder.Services.AddAuthorization();
+        builder.Services.AddServiceLifetime();
+        builder.Services.AddAuthenAuthorService(builder.Configuration);
 
         builder.Services.AddCors(options =>
         {
@@ -44,6 +32,8 @@ public static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app, WebApplicationBuilder builder)
     {
+        app.UseSwagger();
+        app.UseSwaggerUI(); 
         app.UseCors("LonG");
 
         app.UseAuthentication();
