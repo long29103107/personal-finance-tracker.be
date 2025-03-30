@@ -1,7 +1,4 @@
-﻿using Identity.Api.Services.Abstractions;
-using Identity.Api.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
+﻿using Microsoft.OpenApi.Models;
 
 namespace Identity.Api.DependencyInjection.Extensions;
 
@@ -11,10 +8,39 @@ public static class HostingExtensions
     {
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+            // Enable JWT Bearer Authentication in Swagger
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "Enter 'Bearer {your token}' in the field below. Example: 'Bearer abc123'",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+        });
 
         builder.Services.AddServiceLifetime();
         builder.Services.AddAuthenAuthorService(builder.Configuration);
+        builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
         builder.Services.AddCors(options =>
         {
@@ -32,8 +58,10 @@ public static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app, WebApplicationBuilder builder)
     {
+        app.UseRouting();
+
         app.UseSwagger();
-        app.UseSwaggerUI(); 
+        app.UseSwaggerUI();
         app.UseCors("LonG");
 
         app.UseAuthentication();

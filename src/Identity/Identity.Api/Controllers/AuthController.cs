@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Identity.Api.Dtos.Auth;
 using Identity.Api.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Identity.Api.Controllers;
 
