@@ -1,14 +1,18 @@
-﻿using Identity.Api.Services.Abstractions;
-using Shared.Service;
-using Identity.Api.Dtos.Auth;
+﻿using Identity.Api.Dtos.Auth;
+using Identity.Api.Services.Abstractions;
 
 namespace Identity.Api.Services;
 
-public class AuthService : IAuthService//: BaseService<IdentityDbContext>, IAuthService
+public class AuthService : IAuthService
 {
-    //public AuthService(IdentityDbContext context) : base(context)
-    //{
-    //}
+    private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
+
+    public AuthService(IUserService userService, ITokenService tokenService)
+    {
+        _userService = userService;
+        _tokenService = tokenService;
+    }
 
     public async Task<TokenResponse> LoginGoogleAsync(GoogleLoginRequest request)
     {
@@ -21,17 +25,15 @@ public class AuthService : IAuthService//: BaseService<IdentityDbContext>, IAuth
             throw new Exception("Invalid Google token");
         }
 
-        //var payload = await response.Content.ReadFromJsonAsync<GoogleUserPayloadResponse>();
+        var payload = await response.Content.ReadFromJsonAsync<GoogleUserPayloadResponse>();
 
-        // Xử lý đăng nhập hoặc tạo user nếu chưa có trong database
-        //var user = await _userService.FindOrCreateUserAsync(payload);
+        var user = await _userService.CreateOrFindUserAsync(new() { Email = payload.Email } );
 
-        // Tạo JWT token để trả về client
-        //var jwtToken = _tokenService.GenerateToken(user);
+        var token = await  _tokenService.GenerateJwtTokenAsync(user);
 
         return new TokenResponse
         {
-
+            AccessToken = token
         };
     }
 }

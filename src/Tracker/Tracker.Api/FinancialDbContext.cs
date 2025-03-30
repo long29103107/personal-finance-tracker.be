@@ -15,7 +15,7 @@ public class FinancialDbContext : DbContext
     public DbSet<Budget> Budgets { get; set; }
     public DbSet<Goal> Goals { get; set; }
 
-  
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -29,14 +29,15 @@ public class FinancialDbContext : DbContext
             .WithOne(t => t.Category)
             .HasForeignKey(t => t.CategoryId);
 
-        modelBuilder.Entity<Budget>()
-            .HasOne(b => b.User)
-            .WithMany()
-            .HasForeignKey(b => b.UserId);
+        //    modelBuilder.Entity<Budget>()
+        //        .HasOne(b => b.User)
+        //        .WithMany()
+        //        .HasForeignKey(b => b.UserId);
 
-        modelBuilder.Entity<Goal>()
-            .HasOne(g => g.User)
-            .WithMany()
-            .HasForeignKey(g => g.UserId);
+        //    modelBuilder.Entity<Goal>()
+        //        .HasOne(g => g.User)
+        //        .WithMany()
+        //        .HasForeignKey(g => g.UserId);
+        //}
     }
 }

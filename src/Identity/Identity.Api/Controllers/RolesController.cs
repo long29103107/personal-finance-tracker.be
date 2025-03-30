@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Identity.Api.Attributes;
+using Identity.Api.Contants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Identity.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize]
+[LonGAuth(ScopeCodeContants.Post, OperationCodeContants.Read)]
 public class RolesController : ControllerBase
 {
     [HttpGet]

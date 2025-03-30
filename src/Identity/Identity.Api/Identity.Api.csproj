@@ -8,6 +8,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
@@ -22,7 +24,6 @@
 
 	<ItemGroup>
 	  <Folder Include="DependencyInjection\Options\" />
-	  <Folder Include="Entities\" />
 	</ItemGroup>
 
 </Project>
