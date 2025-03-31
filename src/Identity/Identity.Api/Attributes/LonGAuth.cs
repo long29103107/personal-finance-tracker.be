@@ -49,17 +49,27 @@ public class LonGAuth : Attribute, IAsyncAuthorizationFilter
 
             var myCustomAuthService = context.HttpContext.RequestServices.GetRequiredService<ICustomAuthService>();
 
-            var userId = int.TryParse(claimsPrincipal.FindFirst("Id")?.Value, out var userIdClaim)
-                ? userIdClaim
-                : 0;
 
-            if (!string.IsNullOrEmpty(_scope)
-                && !string.IsNullOrEmpty(_operation)
-                && !await myCustomAuthService.CheckIfAllowedAsync(userId, _scope, _operation))
+            var email = claimsPrincipal.FindFirst("Email")?.Value ?? string.Empty;
+
+            if (!email.Equals("long29103107@gmail.com", StringComparison.OrdinalIgnoreCase))
             {
                 context.Result = new ObjectResult("Forbidden") { StatusCode = StatusCodes.Status403Forbidden };
                 return;
             }
+
+
+            //var userId = int.TryParse(claimsPrincipal.FindFirst("Id")?.Value, out var userIdClaim)
+            //    ? userIdClaim
+            //    : 0;
+
+            //if (!string.IsNullOrEmpty(_scope)
+            //    && !string.IsNullOrEmpty(_operation)
+            //    && !await myCustomAuthService.CheckIfAllowedAsync(userId, _scope, _operation))
+            //{
+            //    context.Result = new ObjectResult("Forbidden") { StatusCode = StatusCodes.Status403Forbidden };
+            //    return;
+            //}
 
             //TODO: Add Scoped Cache
             //var scopeCache = context.HttpContext.RequestServices.GetRequiredService<IScopedCache>();
@@ -80,11 +90,11 @@ public class LonGAuth : Attribute, IAsyncAuthorizationFilter
         var validationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"])),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:SecretKey"])),
             ValidateIssuer = false,
             ValidateAudience = false,
-            ValidAudience = configuration["JWT:ValidAudience"],
-            ValidIssuer = configuration["JWT:ValidIssuer"],
+            ValidAudience = configuration["JwtSettings:ValidAudience"],
+            ValidIssuer = configuration["JwtSettings:ValidIssuer"],
             RequireExpirationTime = false,
             ValidateLifetime = false
         };
