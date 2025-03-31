@@ -57,7 +57,8 @@ public class LonGAuth : Attribute, IAsyncAuthorizationFilter
                 && !string.IsNullOrEmpty(_operation)
                 && !await myCustomAuthService.CheckIfAllowedAsync(userId, _scope, _operation))
             {
-                context.Result = new ForbidResult();
+                context.Result = new ObjectResult("Forbidden") { StatusCode = StatusCodes.Status403Forbidden };
+                return;
             }
 
             //TODO: Add Scoped Cache
