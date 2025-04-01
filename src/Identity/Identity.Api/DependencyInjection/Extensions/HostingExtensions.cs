@@ -42,17 +42,6 @@ public static class HostingExtensions
         builder.Services.AddAuthenAuthorService(builder.Configuration);
         builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("LonG", policy =>
-            {
-                policy.WithOrigins("http://localhost:3000")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
-            });
-        });
-
         return builder.Build();
     }
 
@@ -62,7 +51,6 @@ public static class HostingExtensions
 
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.UseCors("LonG");
 
         app.UseAuthentication();
         app.UseAuthorization();

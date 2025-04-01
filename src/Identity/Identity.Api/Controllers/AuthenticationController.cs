@@ -10,11 +10,11 @@ namespace Identity.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController : ControllerBase
+public class AuthenticationController : ControllerBase
 {
     private readonly IAuthService _authService;
 
-    public AuthController(IAuthService authService)
+    public AuthenticationController(IAuthService authService)
     {
         _authService = authService;
     }

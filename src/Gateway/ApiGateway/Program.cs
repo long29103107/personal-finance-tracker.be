@@ -16,7 +16,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("LonG",
         builder => builder.WithOrigins("http://localhost:3000")
                           .AllowAnyMethod()
-                          .AllowAnyHeader());
+                          .AllowAnyHeader()
+                          .AllowCredentials());
 });
 
 var app = builder.Build();
@@ -27,11 +28,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("LonG");
+
 app.UseRouting();
+
 app.UseAuthorization();
 
 app.UseSwaggerForOcelotUI();
-app.MapControllers();
+
 app.UseOcelot()
     .Wait();
 
