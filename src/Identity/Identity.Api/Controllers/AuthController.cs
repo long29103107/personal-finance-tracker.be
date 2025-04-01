@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Identity.Api.Dtos.Auth;
 using Identity.Api.Services.Abstractions;
-using Microsoft.AspNetCore.Authorization;
+using Identity.Api.Attributes;
+using System.Security.Claims;
 
 namespace Identity.Api.Controllers;
 
@@ -30,5 +31,16 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
     {
         return Ok(await _authService.LoginGoogleAsync(request));
+    }
+
+    [HttpPost("logout")]
+    [LonGAuth]
+    public async Task<IActionResult> Logout()
+    {
+        // Đăng xuất nếu dùng ASP.NET Core Identity
+        await HttpContext.SignOutAsync();
+        HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+
+        return Ok(new { message = "Logout successful" });
     }
 }
