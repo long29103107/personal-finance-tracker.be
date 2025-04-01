@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace Identity.Api.Controllers;
 
-[Route("auth")]
+[Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
 {
@@ -37,8 +37,8 @@ public class AuthController : ControllerBase
     [LonGAuth]
     public async Task<IActionResult> Logout()
     {
-        // Đăng xuất nếu dùng ASP.NET Core Identity
         await HttpContext.SignOutAsync();
+
         HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
 
         return Ok(new { message = "Logout successful" });
