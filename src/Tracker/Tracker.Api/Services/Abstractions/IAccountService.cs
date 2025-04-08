@@ -1,13 +1,13 @@
-﻿using Tracker.Api.Entities;
+﻿using Tracker.Api.Dtos.Account;
 
 namespace Tracker.Api.Services.Abstractions;
 
 public interface IAccountService
 {
-    Task<IEnumerable<Account>> GetAllAsync();
-    Task<Account?> GetByIdAsync(int id);
-    Task<Account> CreateAsync(Account account);
-    Task<Account?> UpdateAsync(int id, Account updated);
+    Task<IEnumerable<AccountListResponse>> GetListAsync();
+    Task<AccountResponse> GetByIdAsync(int id);
+    Task<AccountResponse> CreateAsync(AccountCreateRequest request);
+    Task<AccountResponse> UpdateAsync(int id, AccountUpdateRequest request);
     Task<bool> DeleteAsync(int id);
 }
 
