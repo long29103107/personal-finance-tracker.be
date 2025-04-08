@@ -1,12 +1,13 @@
-﻿using Tracker.Api.Constants;
+﻿using Shared.Domain.Abstractions;
+using Tracker.Api.Constants;
 
 namespace Tracker.Api.Entities;
 
 public class Transaction : BaseEntity
 {
-    public string UserId { get; set; }
-    public string AccountId { get; set; }
-    public string CategoryId { get; set; }
+    public string Email { get; set; }
+    public int AccountId { get; set; }
+    public int CategoryId { get; set; }
     public decimal Amount { get; set; }
     public string Type { get; set; } = TransactionTypeConstants.Expense;
     public DateTime Date { get; set; } = DateTime.UtcNow;

@@ -52,11 +52,11 @@ public class LonGAuth : Attribute, IAsyncAuthorizationFilter
 
             var email = claimsPrincipal.FindFirst("Email")?.Value ?? string.Empty;
 
-            if (!email.Equals("long29103107@gmail.com", StringComparison.OrdinalIgnoreCase))
-            {
-                context.Result = new ObjectResult("Forbidden") { StatusCode = StatusCodes.Status403Forbidden };
-                return;
-            }
+            //if (!email.Equals("long29103107@gmail.com", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    context.Result = new ObjectResult("Forbidden") { StatusCode = StatusCodes.Status403Forbidden };
+            //    return;
+            //}
 
 
             //var userId = int.TryParse(claimsPrincipal.FindFirst("Id")?.Value, out var userIdClaim)

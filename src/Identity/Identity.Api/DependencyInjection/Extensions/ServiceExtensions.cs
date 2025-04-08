@@ -7,7 +7,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Identity.Api.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
 namespace Identity.Api.DependencyInjection.Extensions;
@@ -47,6 +46,8 @@ public static class ServiceExtensions
                 options.ClientId = configuration["Authentication:Google:ClientId"] ?? string.Empty;
                 options.ClientSecret = configuration["Authentication:Google:ClientSecret"] ?? string.Empty;
                 options.CallbackPath = "/auth/google/callback"; 
+                options.Scope.Add("https://www.googleapis.com/auth/spreadsheets");
+                options.Scope.Add("https://www.googleapis.com/auth/drive.file"); 
                 options.SaveTokens = true;
             })
             .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
@@ -62,12 +63,6 @@ public static class ServiceExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
                 };
             });
-
-        //services.AddAuthorization(options =>
-        //{
-        //    options.AddPolicy("CustomPolicy", policy =>
-        //        policy.RequireAuthenticatedUser().AddRequirements(new CustomAuthorizationRequirement()));
-        //});
 
         return services;
     }

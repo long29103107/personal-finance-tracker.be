@@ -1,8 +1,7 @@
-﻿namespace Tracker.Api.Entities;
-
+﻿namespace Shared.Domain.Abstractions;
 public abstract class BaseEntity
 {
-    public string Id { get; set; }
+    public int Id { get; set; }
     public string CreatedBy { get; set; }
     public DateTime CreatedAt { get; set; }
     public string UpdatedBy { get; set; }

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Tracker.Api.Controllers;
-
+namespace TrackerMaster.Api.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
