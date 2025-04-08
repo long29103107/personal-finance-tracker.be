@@ -1,13 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shared.Domain.Abstractions;
 using Shared.Repository.Abstractions;
 using System.Linq.Expressions;
+using Microsoft.IdentityModel.Tokens;
+using Shared.Lib;
+
 namespace Shared.Repository;
 
 public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
-    where T : class
+    where T : BaseEntity
     where TContext : DbContext
 {
     protected readonly TContext _context;
+    protected readonly bool _needSetAuditLog = true;
 
     public RepositoryBase(TContext context)
     {
@@ -74,30 +79,90 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     #region Action
     public void Add(T entity)
     {
+        if(_needSetAuditLog)
+        {
+            BeforeAdd(entity);
+        }
         _context.Set<T>().Add(entity);
     }
-    public void AddRange(IEnumerable<T> entities)
+
+    public void AddRange(List<T> entities)
     {
-        _context.Set<T>().AddRange(entities);
-    }
-    public void Update(T entity)
-    {
-        _context.Set<T>().Update(entity);
-    }
-    public void UpdateRange(IEnumerable<T> entities)
-    {
-        _context.Set<T>().UpdateRange(entities);
-    }
-    public void Remove(T entity)
-    {
-        _context.Set<T>().Remove(entity);
-    }
-    public void RemoveRange(IEnumerable<T> entities)
-    {
-        if (entities == null)
+        if(entities.IsNullOrEmpty())
             return;
 
+        foreach (var entity in entities)
+        {
+            if (_needSetAuditLog)
+            {
+                BeforeAdd(entity);
+            }
+        }
+
+        _context.Set<T>().AddRange(entities);
+    }
+
+    public void Update(T entity)
+    {
+        if(_needSetAuditLog)
+        {
+            BeforeUpdate(entity);
+        }
+        _context.Set<T>().Update(entity);
+    }
+
+    public void UpdateRange(List<T> entities)
+    {
+        if (entities.IsNullOrEmpty())
+            return;
+
+        foreach (var entity in entities)
+        {
+            if (_needSetAuditLog)
+            {
+                BeforeUpdate(entity);
+            }
+        } 
+        _context.Set<T>().UpdateRange(entities);
+    }
+
+    public void Remove(T entity)
+    {
+        if (_needSetAuditLog)
+        {
+            BeforeRemove(entity);
+        }
+        _context.Set<T>().Remove(entity);
+    }
+
+    public void RemoveRange(List<T> entities)
+    {
+        if (entities.IsNullOrEmpty())
+            return;
+
+        foreach (var entity in entities)
+        {
+            if (_needSetAuditLog)
+            {
+                BeforeRemove(entity);
+            }
+        }
         _context.Set<T>().RemoveRange(entities);
+    }
+
+    public virtual void BeforeAdd(T entity)
+    {
+
+    }
+
+    public virtual void BeforeUpdate(T entity)
+    {
+
+    }
+
+    public virtual void BeforeRemove(T entity)
+    {
+
     }
     #endregion
 
@@ -106,14 +171,17 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     {
         return Filter().Any();
     }
+    
     public async Task<bool> AnyAsync()
     {
         return await Filter().AnyAsync();
     }
+
     public bool Any(Expression<Func<T, bool>> expression)
     {
         return Filter().Where(expression).Any();
     }
+    
     public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
     {
         return await Filter().Where(expression).AnyAsync();

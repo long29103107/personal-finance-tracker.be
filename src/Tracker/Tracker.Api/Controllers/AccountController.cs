@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Presentation;
 using Tracker.Api.Dtos.Account;
-using Tracker.Api.Entities;
 using Tracker.Api.Services.Abstractions;
 
 namespace Tracker.Api.Controllers;
 
 public class AccountController(IAccountService _service) : CustomControllerBase
 {
-
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {

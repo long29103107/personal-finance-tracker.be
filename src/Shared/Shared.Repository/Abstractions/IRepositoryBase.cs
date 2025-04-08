@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shared.Domain.Abstractions;
 using System.Linq.Expressions;
 
 namespace Shared.Repository.Abstractions;
 public interface IRepositoryBase<T, TContext>
-    where T : class
+    where T : BaseEntity
     where TContext : DbContext
 {
     #region Query
@@ -17,11 +18,14 @@ public interface IRepositoryBase<T, TContext>
 
     #region Action
     void Add(T entity);
-    void AddRange(IEnumerable<T> entities);
+    void AddRange(List<T> entities);
     void Update(T entity);
-    void UpdateRange(IEnumerable<T> entities);
+    void UpdateRange(List<T> entities);
     void Remove(T entity);
-    void RemoveRange(IEnumerable<T> entities);
+    void RemoveRange(List<T> entities);
+    void BeforeAdd(T entity);
+    void BeforeUpdate(T entity);
+    void BeforeRemove(T entity);
     #endregion
 
     #region Linq 

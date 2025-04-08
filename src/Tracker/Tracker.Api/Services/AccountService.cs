@@ -1,12 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Shared.Domain.Exceptions;
 using Tracker.Api.Dtos.Account;
 using Tracker.Api.Entities;
 using Tracker.Api.Exceptions;
 using Tracker.Api.Repositories.Abstractions;
 using Tracker.Api.Services.Abstractions;
+using ValidationException = Shared.Domain.Exceptions.ValidationException;
 
 namespace Tracker.Api.Services;
-public class AccountService(IAccountRepository _accountRepo) : IAccountService
+public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _validatorFactory) : IAccountService
 {
     public async Task<IEnumerable<AccountListResponse>> GetListAsync()
     {
@@ -48,7 +51,7 @@ public class AccountService(IAccountRepository _accountRepo) : IAccountService
             Currency = request.Currency
         };
 
-        _ValidateAccount(entity);
+        await _ValidateAccountAsync(entity);
         _accountRepo.Add(entity);
         await _accountRepo.SaveAsync();
 
@@ -67,7 +70,7 @@ public class AccountService(IAccountRepository _accountRepo) : IAccountService
         var entity = await _GetAccountById(id)
             ?? throw new AccountException.NotFound(id); 
 
-        _ValidateAccount(entity);
+        await _ValidateAccountAsync(entity);
         _accountRepo.Update(entity);
         await _accountRepo.SaveAsync();
 
@@ -106,8 +109,16 @@ public class AccountService(IAccountRepository _accountRepo) : IAccountService
         return result;
     }
 
-    private void _ValidateAccount(Account entity)
+    private async Task _ValidateAccountAsync(Account model)
     {
-        //TODO: Validate account
+        var validator = _validatorFactory.GetValidator<Account>();
+        var result = await validator.ValidateAsync(model);
+
+        if (!result.IsValid)
+        {
+            var errors = result.Errors.Select(x => new ValidationError(x.PropertyName, x.ErrorMessage)).ToList();
+
+            throw new ValidationException(errors);
+        }
     }
 }
