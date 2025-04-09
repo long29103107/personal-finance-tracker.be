@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using Tracker.Api.Entities;
+using Tracker.Api.Entities.Views;
 
 namespace Tracker.Api;
 
@@ -26,5 +28,13 @@ public class FinancialDbContext : DbContext
             .HasMany(c => c.Transactions)
             .WithOne(t => t.Category)
             .HasForeignKey(t => t.CategoryId);
+
+        //Config view
+        modelBuilder.Entity<IdentityUsersV>(entity =>
+        {
+            entity.HasNoKey(); 
+            entity.ToView("IdentityUsersV"); 
+        });
+
     }
 }

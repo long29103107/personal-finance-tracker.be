@@ -13,7 +13,7 @@ using Serilog.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<FinancialDbContext>(options =>
     options.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("Tracker")));

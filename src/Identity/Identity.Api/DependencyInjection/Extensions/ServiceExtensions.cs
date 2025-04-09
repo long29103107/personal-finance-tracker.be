@@ -15,7 +15,7 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddAuthenAuthorService(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("Identity");
 
         services.AddDbContext<CustomIdentityDbContext>(
         (sp, options) =>

@@ -8,10 +8,15 @@ using Tracker.Api.DependencyInjection.Extensions;
 using FluentValidation;
 using Shared.Domain.Exceptions;
 using ValidationException = Shared.Domain.Exceptions.ValidationException;
+using Tracker.Api.Repositories.Abstractions.Views;
 
 namespace Tracker.Api.Services;
 
-public class CategoryServic(ICategoryRepository _cateRepo, IValidatorFactory _validatorFactory) : ICategoryService
+public class CategoryService(ICategoryRepository _cateRepo
+    , IValidatorFactory _validatorFactory
+    , IIdentityUsersVRepository _identityUsersRepo) 
+    
+    : ICategoryService
 {
     public async Task<List<CategoryResponse>> GetListAsync()
     {
