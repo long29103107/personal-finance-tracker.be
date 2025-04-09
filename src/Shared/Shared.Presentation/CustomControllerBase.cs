@@ -12,6 +12,11 @@ public abstract class CustomControllerBase : ControllerBase
 {
     protected IScopedCache _scopedCache;
 
+    protected CustomControllerBase()
+    {
+        
+    }
+
     protected IActionResult GetResponse(bool res)
     {
         return _GetResponse(StatusCodes.Status200OK, res);

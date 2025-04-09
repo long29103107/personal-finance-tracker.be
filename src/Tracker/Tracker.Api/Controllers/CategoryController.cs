@@ -5,8 +5,15 @@ using Tracker.Api.Services.Abstractions;
 
 namespace Tracker.Api.Controllers;
 
-public class CategoryController(ICategoryService _service) : CustomControllerBase
+public class CategoryController : CustomControllerBase
 {
+    private readonly ICategoryService _service;
+
+    public CategoryController(ICategoryService service)
+    {
+        _service = service;
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetListAsync()
     {

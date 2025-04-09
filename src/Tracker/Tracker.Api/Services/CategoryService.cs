@@ -100,13 +100,12 @@ public class CategoryServic(ICategoryRepository _cateRepo, IValidatorFactory _va
         }
         catch (Exception)
         {
-            
             return false;
         }
         
     }
 
-    private async Task<Category> _GetCategoryAsync(int id)
+    private async Task<Category?> _GetCategoryAsync(int id)
     {
         var result = await _cateRepo.FindByCondition(x => x.Id == id)
            .FirstOrDefaultAsync();
