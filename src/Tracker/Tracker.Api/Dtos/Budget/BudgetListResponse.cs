@@ -1,11 +1,11 @@
 ﻿using Shared.Domain;
 using Tracker.Api.Constants;
 
-namespace Tracker.Api.Dtos.Category;
+namespace Tracker.Api.Dtos.Budget;
 
-public sealed class CategoryUpdateRequest : Request
+public sealed class BudgetListResponse : Response
 {
-    public int? UserId { get; set; }
+    public string Email { get; set; }
     public int? ParentCategoryId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Type { get; set; } = TransactionTypeConstants.Expense;

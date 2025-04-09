@@ -5,7 +5,7 @@ using Tracker.Api.Services.Abstractions;
 
 namespace Tracker.Api.Controllers;
 
-public class CategoryController(ICategoryService _service) : CustomControllerBase
+public class CategoriesController(ICategoryService _service) : CustomControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetListAsync()
@@ -29,5 +29,17 @@ public class CategoryController(ICategoryService _service) : CustomControllerBas
     public async Task<IActionResult> CreateAsync([FromBody] CategoryCreateRequest request)
     {
        return GetResponse(await _service.CreateAsync(request));
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> UpdateAsync([FromRoute]int id, [FromBody] CategoryUpdateRequest request)
+    {
+        return GetResponse(await _service.UpdateAsync(id, request));
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+    {
+        return GetResponse(await _service.DeleteAsync(id));
     }
 }

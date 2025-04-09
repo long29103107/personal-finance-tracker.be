@@ -14,9 +14,6 @@ public class CategoryValidator : AbstractValidator<Category>
     {
         _cateRepo = cateRepo;
         _identityUsersRepo = identityUsersRepo;
-        RuleFor(p => p.Email)
-            .NotEmpty().WithMessage("Email is required.")
-            .EmailAddress().WithMessage("Email is not valid.");
 
         RuleFor(p => p.Name)
             .NotEmpty().WithMessage("Category name is required.")
@@ -39,12 +36,16 @@ public class CategoryValidator : AbstractValidator<Category>
     private async Task CheckExistCategoryAsync(Category category, ValidationContext<Category> context, CancellationToken cancellationToken)
     {
         IQueryable<Category> existCategoryQuery = _cateRepo.FindByCondition(x => 
-            x.Email == category.Email
+            x.UserId == category.UserId
             && x.Name.Equals(category.Name));
 
         if (category.ParentCategoryId.GetValueOrDefault(0) != 0)
         {
             existCategoryQuery = existCategoryQuery.Where(x => x.ParentCategoryId == category.ParentCategoryId);
+        }
+        else
+        {
+            existCategoryQuery = existCategoryQuery.Where(x => x.ParentCategoryId == null);
         }
 
         if ((await existCategoryQuery.FirstOrDefaultAsync(cancellationToken)) is not null)
@@ -57,7 +58,7 @@ public class CategoryValidator : AbstractValidator<Category>
     //TODO: Open rule
     private async Task CheckEmailExistInIdentityAsync(Category category, ValidationContext<Category> context, CancellationToken cancellationToken)
     {
-        var existingEmail = await _identityUsersRepo.AnyAsync(x => x.Email.Equals(category.Email));
+        var existingEmail = await _identityUsersRepo.AnyAsync(x => x.Email.Equals(category.UserId));
 
         if (!existingEmail)
         {
@@ -68,6 +69,9 @@ public class CategoryValidator : AbstractValidator<Category>
 
     private async Task CheckExistingParentCategoryAsync(Category category, ValidationContext<Category> context, CancellationToken cancellationToken)
     {
+        if (category.ParentCategoryId == null)
+            return;
+
         var existingCategory = await _cateRepo.AnyAsync(x => x.Id == category.ParentCategoryId);
 
         if (!existingCategory)

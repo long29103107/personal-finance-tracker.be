@@ -1,8 +1,9 @@
-﻿using Shared.Domain.Abstractions;
+﻿using Shared.Domain;
+using Tracker.Api.Constants;
 
-namespace Tracker.Api.Entities;
+namespace Tracker.Api.Dtos.Goal;
 
-public class Goal : BaseEntity
+public sealed class GoalListResponse : Response
 {
     public string Name { get; set; } = string.Empty;
     public decimal TargetAmount { get; set; }

@@ -1,9 +1,9 @@
-﻿using Shared.Domain.Abstractions;
+﻿using Shared.Domain;
 using Tracker.Api.Constants;
 
-namespace Tracker.Api.Entities;
+namespace Tracker.Api.Dtos.Transaction;
 
-public class Transaction : BaseEntity
+public sealed class TransactionUpdateRequest : Request
 {
     public int AccountId { get; set; }
     public int CategoryId { get; set; }
@@ -11,6 +11,4 @@ public class Transaction : BaseEntity
     public string Type { get; set; } = TransactionTypeConstants.Expense;
     public DateTime Date { get; set; } = DateTime.UtcNow;
     public string? Description { get; set; }
-    public Account Account { get; set; } = null!;
-    public Category Category { get; set; } = null!;
 }

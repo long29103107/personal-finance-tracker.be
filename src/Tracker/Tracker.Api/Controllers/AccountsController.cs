@@ -6,7 +6,7 @@ using Tracker.Api.Services.Abstractions;
 
 namespace Tracker.Api.Controllers;
 
-public class AccountController(IAccountService _service) : CustomControllerBase
+public class AccountsController(IAccountService _service) : CustomControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAll()

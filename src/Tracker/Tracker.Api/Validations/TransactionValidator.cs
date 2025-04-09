@@ -3,9 +3,9 @@ using Tracker.Api.Entities;
 
 namespace Tracker.Api.Validations;
 
-public class AccountValidator : AbstractValidator<Account>
+public class TransactionValidator : AbstractValidator<Transaction>
 {
-    public AccountValidator()
+    public TransactionValidator()
     {
         RuleFor(p => p.UserId).NotEmpty();
     }

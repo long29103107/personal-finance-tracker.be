@@ -16,7 +16,7 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
         var result = await _accountRepo.FindAll()
             .Select(x => new AccountListResponse()
             {
-                Email = x.Email,
+                UserId = x.UserId,
                 Name = x.Name,
                 Balance = x.Balance,
                 Currency = x.Currency
@@ -35,7 +35,7 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
         {
             Id = entity.Id,
             Name = entity.Name,
-            Email = entity.Email,
+            UserId = entity.UserId,
             Balance = entity.Balance,
             Currency = entity.Currency
         };
@@ -46,7 +46,7 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
         var entity = new Account
         {
             Name = request.Name,
-            Email = request.Email,
+            UserId = request.UserId,
             Balance = request.Balance,
             Currency = request.Currency
         };
@@ -59,7 +59,7 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
         {
             Id = entity.Id,
             Name = entity.Name,
-            Email = entity.Email,
+            UserId = entity.UserId,
             Balance = entity.Balance,
             Currency = entity.Currency
         };
@@ -72,7 +72,7 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
 
         entity.Balance = request.Balance;
         entity.Name = request.Name;
-        entity.Email = request.Email;
+        entity.UserId = request.UserId;
         entity.Currency = request.Currency;
 
         await _ValidateAccountAsync(entity);
@@ -83,7 +83,7 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
         {
             Id = entity.Id,
             Name = entity.Name,
-            Email = entity.Email,
+            UserId = entity.UserId,
             Balance = entity.Balance,
             Currency = entity.Currency
         };
@@ -108,10 +108,10 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
 
     public async Task<AccountSummaryResponse> GetAccountBalancesAsync(AccountSummaryRequest request)
     {
-        var email = request.ScopedContext.Email
-            ?? throw new ArgumentNullException(nameof(request.ScopedContext.Email));
+        var userId = request.ScopedContext?.UserId
+            ?? throw new ArgumentNullException(nameof(request.ScopedContext.UserId));
 
-        var accounts = await _accountRepo.FindByCondition(x => x.Email == email)
+        var accounts = await _accountRepo.FindByCondition(x => x.UserId == userId)
             .ToListAsync(); 
 
         var result =  new AccountSummaryResponse

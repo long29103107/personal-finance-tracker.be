@@ -4,21 +4,24 @@ using Tracker.Api.Entities;
 using Tracker.Api.Exceptions;
 using Tracker.Api.Repositories.Abstractions;
 using Tracker.Api.Services.Abstractions;
-using Tracker.Api.DependencyInjection.Extensions;
 using FluentValidation;
 using Shared.Domain.Exceptions;
 using ValidationException = Shared.Domain.Exceptions.ValidationException;
 using Tracker.Api.Repositories.Abstractions.Views;
+using System.Collections.Generic;
+using Tracker.Api.DependencyInjection.Extensions.Mapping;
 
 namespace Tracker.Api.Services;
 
 public class CategoryService(ICategoryRepository _cateRepo
     , IValidatorFactory _validatorFactory
-    , IIdentityUsersVRepository _identityUsersRepo) 
+    , IIdentityUsersVRepository _identityUsersRepo
+    , ITransactionRepository _transactionRepo) 
     
     : ICategoryService
 {
-    public async Task<List<CategoryResponse>> GetListAsync()
+
+    public async Task<IEnumerable<CategoryResponse>> GetListAsync()
     {
         var result = await _cateRepo.FindAll()
             .Select(x => new CategoryResponse
@@ -27,7 +30,7 @@ public class CategoryService(ICategoryRepository _cateRepo
                 Name = x.Name,
                 Type = x.Type,
                 ParentCategoryId = x.ParentCategoryId,
-                Email = x.Email
+                UserId = x.UserId
             })
             .ToListAsync();
 
@@ -51,7 +54,7 @@ public class CategoryService(ICategoryRepository _cateRepo
                  Name = x.Name,
                  Type = x.Type,
                  ParentCategoryId = x.ParentCategoryId,
-                 Email = x.Email
+                 UserId = x.UserId
              })
             .ToListAsync();
 
@@ -65,7 +68,7 @@ public class CategoryService(ICategoryRepository _cateRepo
             Name = request.Name,
             Type = request.Type,
             ParentCategoryId = request.ParentCategoryId,
-            Email = request.Email
+            UserId = request.UserId
         };
 
         await _ValidateCategoryAsync(entity);
@@ -80,7 +83,7 @@ public class CategoryService(ICategoryRepository _cateRepo
         Category entity = await _GetCategoryAsync(id)
           ?? throw new CategoryException.NotFound(id);
 
-        entity.Email = request.Email;
+        entity.UserId = request.UserId;
         entity.ParentCategoryId = request.ParentCategoryId;
         entity.Name = request.Name;
         entity.Type = request.Type;
@@ -97,6 +100,8 @@ public class CategoryService(ICategoryRepository _cateRepo
         Category entity = await _GetCategoryAsync(id)
           ?? throw new CategoryException.NotFound(id);
 
+        await _CheckCategoryHasTransactionsAsync(entity);
+
         try
         {
             _cateRepo.Remove(entity);
@@ -107,6 +112,21 @@ public class CategoryService(ICategoryRepository _cateRepo
         {
             return false;
         }
+    }
+
+    private async Task _CheckCategoryHasTransactionsAsync(Category entity)
+    {
+        var categoryIds = await _cateRepo.FindByCondition(x => x.Id == entity.Id || x.ParentCategoryId == entity.Id)
+            .Select(x => x.Id)
+            .ToListAsync();
+
+        var hasTransactions = await _transactionRepo.AnyAsync(x => categoryIds.Contains(x.CategoryId));
+
+        if (hasTransactions)
+        {
+            throw new CategoryException.HasTransactions(entity.Id);
+        }
+
         
     }
 

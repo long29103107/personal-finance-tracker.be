@@ -1,7 +1,7 @@
 ﻿using Tracker.Api.Dtos.Category;
 using Tracker.Api.Entities;
 
-namespace Tracker.Api.DependencyInjection.Extensions;
+namespace Tracker.Api.DependencyInjection.Extensions.Mapping;
 
 public static class CategoryMappingExtension
 {
@@ -13,7 +13,7 @@ public static class CategoryMappingExtension
             Name = category.Name,
             Type = category.Type,
             ParentCategoryId = category.ParentCategoryId,
-            Email = category.Email
+            UserId = category.UserId
         };
     }
 }

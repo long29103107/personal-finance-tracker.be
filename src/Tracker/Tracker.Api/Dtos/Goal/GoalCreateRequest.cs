@@ -1,8 +1,8 @@
-﻿using Shared.Domain.Abstractions;
+﻿using Shared.Domain;
 
-namespace Tracker.Api.Entities;
+namespace Tracker.Api.Dtos.Goal;
 
-public class Goal : BaseEntity
+public sealed class GoalCreateRequest : Request
 {
     public string Name { get; set; } = string.Empty;
     public decimal TargetAmount { get; set; }

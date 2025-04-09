@@ -8,4 +8,9 @@ public static class CategoryException
     {
         public NotFound(int id) : base($"The category `{id}` was not found.") { }
     }
+
+    public class HasTransactions : DomainException
+    {
+        public HasTransactions(int id) : base("Category has transactions", $"The category `{id}` has transactions.") { }
+    }
 }
