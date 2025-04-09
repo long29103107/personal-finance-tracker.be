@@ -35,6 +35,6 @@ public interface IRepositoryBase<T, TContext>
     Task<bool> AnyAsync();
     Task<int> SaveAsync();
     int Save();
-    void Dispose();
+    void Dispose(); 
     #endregion
 }

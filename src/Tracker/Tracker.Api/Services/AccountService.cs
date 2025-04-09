@@ -68,7 +68,12 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
     public async Task<AccountResponse> UpdateAsync(int id, AccountUpdateRequest request)
     {
         var entity = await _GetAccountById(id)
-            ?? throw new AccountException.NotFound(id); 
+            ?? throw new AccountException.NotFound(id);
+
+        entity.Balance = request.Balance;
+        entity.Name = request.Name;
+        entity.Email = request.Email;
+        entity.Currency = request.Currency;
 
         await _ValidateAccountAsync(entity);
         _accountRepo.Update(entity);
@@ -101,7 +106,27 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
         }
     }
 
-    private async Task<Account> _GetAccountById(int id)
+    public async Task<AccountSummaryResponse> GetAccountBalancesAsync(AccountSummaryRequest request)
+    {
+        var email = request.ScopedContext.Email
+            ?? throw new ArgumentNullException(nameof(request.ScopedContext.Email));
+
+        var accounts = await _accountRepo.FindByCondition(x => x.Email == email)
+            .ToListAsync(); 
+
+        var result =  new AccountSummaryResponse
+        {
+            Accounts = accounts.Select(a => new AccountSummaryDto
+            {
+                AccountName = a.Name,
+                Balance = a.Balance
+            }).ToList()
+        };
+
+        return result;
+    }
+
+    private async Task<Account?> _GetAccountById(int id)
     {
         var result = await _accountRepo.FindByCondition(x => x.Id == id)
            .FirstOrDefaultAsync();

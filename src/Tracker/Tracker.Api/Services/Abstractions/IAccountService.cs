@@ -9,5 +9,6 @@ public interface IAccountService
     Task<AccountResponse> CreateAsync(AccountCreateRequest request);
     Task<AccountResponse> UpdateAsync(int id, AccountUpdateRequest request);
     Task<bool> DeleteAsync(int id);
+    Task<AccountSummaryResponse> GetAccountBalancesAsync(AccountSummaryRequest request);
 }
 

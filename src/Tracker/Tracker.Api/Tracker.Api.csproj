@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\Shared\Shared.Repository\Shared.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DependencyInjection\Options\" />
+  </ItemGroup>
+
 </Project>

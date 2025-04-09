@@ -1,11 +1,9 @@
-﻿using Tracker.Api.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Shared.Repository.Abstractions;
+using Tracker.Api.Entities;
 
 namespace Tracker.Api.Repositories.Abstractions;
 
-public interface ICategoryRepository
+public interface ICategoryRepository : IRepositoryBase<Category, DbContext>
 {
-    Task<Category> CreateAsync(Category category);
-    Task<List<Category>> GetAllAsync();
-    Task<Category?> GetByIdAsync(int id);
-    Task<List<Category>> GetByParentIdAsync(int parentId);
 }

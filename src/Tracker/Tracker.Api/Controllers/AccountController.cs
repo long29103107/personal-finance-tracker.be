@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Presentation;
 using Tracker.Api.Dtos.Account;
+using Tracker.Api.Services;
 using Tracker.Api.Services.Abstractions;
 
 namespace Tracker.Api.Controllers;
@@ -36,4 +37,12 @@ public class AccountController(IAccountService _service) : CustomControllerBase
     {
         return GetResponse(await _service.DeleteAsync(id));
     }
+
+    [HttpGet("balances")]
+    public async Task<IActionResult> GetAccountBalances(AccountSummaryRequest request)
+    {
+        var result = await _service.GetAccountBalancesAsync(request);
+        return Ok(result);
+    }
+
 }

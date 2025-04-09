@@ -1,12 +1,14 @@
-﻿using Tracker.Api.Dtos;
+﻿using Tracker.Api.Dtos.Category;
 using Tracker.Api.Entities;
 
 namespace Tracker.Api.Services.Abstractions;
 
 public interface ICategoryService
 {
-    Task<Category> CreateCategoryAsync(CategoryDto dto);
-    Task<List<Category>> GetAllCategoriesAsync();
-    Task<Category?> GetCategoryByIdAsync(int id);
-    Task<List<Category>> GetSubCategoriesAsync(int parentId);
+    Task<List<CategoryResponse>> GetListAsync();
+    Task<CategoryResponse> GetByIdAsync(int id);
+    Task<List<CategoryResponse>> GetSubCategoriesAsync(int parentId);
+    Task<CategoryResponse> CreateAsync(CategoryCreateRequest request);
+    Task<CategoryResponse> UpdateAsync(int id, CategoryUpdateRequest request);
+    Task<bool> DeleteAsync(int id);
 }

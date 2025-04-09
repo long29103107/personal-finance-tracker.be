@@ -63,7 +63,7 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     }
     public IQueryable<T> Includes(Expression<Func<T, bool>>[] expressions)
     {
-        if (expressions != null && expressions.Length > 0)
+        if (expressions.IsNullOrEmpty())
             return _context.Set<T>();
 
         foreach (var expression in expressions)

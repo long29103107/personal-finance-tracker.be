@@ -1,43 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shared.Repository;
 using Tracker.Api.Entities;
 using Tracker.Api.Repositories.Abstractions;
 
 namespace Tracker.Api.Repositories;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoryRepository : RepositoryBase<Category, FinancialDbContext>, ICategoryRepository
 {
-    private readonly FinancialDbContext _context;
+    public CategoryRepository(FinancialDbContext context) : base(context) { }
 
-    public CategoryRepository(FinancialDbContext context)
+    public override void BeforeAdd(Category entity)
     {
-        _context = context;
+        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedBy = string.Empty;
     }
 
-    public async Task<Category> CreateAsync(Category category)
+    public override void BeforeUpdate(Category entity)
     {
-        _context.Categories.Add(category);
-        await _context.SaveChangesAsync();
-        return category;
-    }
-
-    public async Task<List<Category>> GetAllAsync()
-    {
-        return await _context.Categories
-            .Include(c => c.SubCategories)
-            .ToListAsync();
-    }
-
-    public async Task<Category?> GetByIdAsync(int id)
-    {
-        return await _context.Categories
-            .Include(c => c.SubCategories)
-            .FirstOrDefaultAsync(c => c.Id == id);
-    }
-
-    public async Task<List<Category>> GetByParentIdAsync(int parentId)
-    {
-        return await _context.Categories
-            .Where(c => c.ParentCategoryId == parentId)
-            .ToListAsync();
+        entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedBy = string.Empty;
     }
 }

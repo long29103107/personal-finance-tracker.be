@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="MMLib.SwaggerForOcelot" />
     <PackageReference Include="Ocelot" />
-	  <PackageReference Include="Swashbuckle.AspNetCore" />
+	<PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
 </Project>

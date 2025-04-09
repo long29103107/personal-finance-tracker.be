@@ -1,46 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Tracker.Api.Dtos;
+using Shared.Presentation;
+using Tracker.Api.Dtos.Category;
 using Tracker.Api.Services.Abstractions;
 
 namespace Tracker.Api.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class CategoryController : ControllerBase
+public class CategoryController(ICategoryService _service) : CustomControllerBase
 {
-    private readonly ICategoryService _service;
-
-    public CategoryController(ICategoryService service)
-    {
-        _service = service;
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateCategory([FromBody] CategoryDto dto)
-    {
-        var created = await _service.CreateCategoryAsync(dto);
-        return CreatedAtAction(nameof(GetCategoryById), new { id = created.Id }, created);
-    }
-
     [HttpGet]
-    public async Task<IActionResult> GetAllCategories()
+    public async Task<IActionResult> GetListAsync()
     {
-        var categories = await _service.GetAllCategoriesAsync();
-        return Ok(categories);
+        return GetResponse(await _service.GetListAsync());
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetCategoryById(int id)
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
-        var category = await _service.GetCategoryByIdAsync(id);
-        if (category == null) return NotFound();
-        return Ok(category);
+        return GetResponse(await _service.GetByIdAsync(id));
     }
 
     [HttpGet("{id}/subcategories")]
     public async Task<IActionResult> GetSubCategories(int id)
     {
-        var subCategories = await _service.GetSubCategoriesAsync(id);
-        return Ok(subCategories);
+        return GetResponse(await _service.GetSubCategoriesAsync(id));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateAsync([FromBody] CategoryCreateRequest request)
+    {
+       return GetResponse(await _service.CreateAsync(request));
     }
 }
