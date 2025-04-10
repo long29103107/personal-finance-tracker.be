@@ -7,11 +7,10 @@ namespace Shared.Presentation;
 
 [Route("api/[controller]")]
 [ApiController]
+[ServiceFilter(typeof(CustomServiceFilter))]
 
 public abstract class CustomControllerBase : ControllerBase
 {
-    protected IScopedCache _scopedCache;
-
     protected IActionResult GetResponse(bool res)
     {
         return _GetResponse(StatusCodes.Status200OK, res);

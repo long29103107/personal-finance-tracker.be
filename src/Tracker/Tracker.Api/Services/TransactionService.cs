@@ -96,6 +96,41 @@ public class TransactionService(ITransactionRepository _transactionRepo
         }
     }
 
+    public async Task<TransactionDashboardResponse> GetDashboardAsync(DateTime? fromDate = null, DateTime? toDate = null)
+    {
+        var transactions = await _transactionRepo.FindAll().ToListAsync();
+
+        var groupedByMonth = transactions
+            .GroupBy(t => new { t.Date.Year, t.Date.Month })
+            .Select(g => new MonthlySummaryReponse
+            {
+                Year = g.Key.Year,
+                Month = g.Key.Month,
+                TotalIncome = g.Where(t => t.Type == TransactionTypeConstants.Income).Sum(t => t.Amount),
+                TotalExpense = g.Where(t => t.Type == TransactionTypeConstants.Expense).Sum(t => t.Amount)
+            }).ToList();
+
+        var topCategories = transactions
+            .Where(t => t.Type == TransactionTypeConstants.Expense)
+            .GroupBy(t => t.Category.Name)
+            .Select(g => new TopCategoryResponse
+            {
+                CategoryName = g.Key,
+                TotalAmount = g.Sum(t => t.Amount)
+            })
+            .OrderByDescending(tc => tc.TotalAmount)
+            .Take(5)
+            .ToList();
+
+        return new TransactionDashboardResponse
+        {
+            MonthlySummaries = groupedByMonth,
+            TopCategories = topCategories
+        };
+    }
+
+    #region Private function
+
     private async Task<Transaction?> _GetTransactionAsync(int id)
     {
         var result = await _transactionRepo.FindByCondition(x => x.Id == id)
@@ -116,5 +151,5 @@ public class TransactionService(ITransactionRepository _transactionRepo
             throw new ValidationException(errors);
         }
     }
-
+    #endregion Private function
 }

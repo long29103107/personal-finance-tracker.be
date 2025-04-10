@@ -8,6 +8,7 @@ using Tracker.Api.Repositories.Abstractions;
 using Tracker.Api.Services.Abstractions;
 using Tracker.Api.Exceptions;
 using Tracker.Api.DependencyInjection.Extensions.Mapping;
+using Tracker.Api.Repositories;
 
 namespace Tracker.Api.Services;
 
@@ -87,6 +88,32 @@ public class GoalService(IGoalRepository _goalRepo
         {
             return false;
         }
+    }
+
+    public async Task<bool> MarkAsCompletedAsync(int id)
+    {
+        var goal = await _GetGoalAsync(id);
+        if (goal == null) return false;
+
+        goal.CurrentAmount = goal.TargetAmount;
+        _goalRepo.Update(goal);
+        await _goalRepo.SaveAsync();
+
+        return true;
+    }
+
+    public async Task UpdateProgressAsync(int goalId, decimal transactionAmount)
+    {
+        var goal = await _GetGoalAsync(goalId);
+        if (goal == null) return;
+
+        goal.CurrentAmount += transactionAmount;
+
+        if (goal.CurrentAmount > goal.TargetAmount)
+            goal.CurrentAmount = goal.TargetAmount;
+
+        _goalRepo.Update(goal);
+        await _goalRepo.SaveAsync();
     }
 
     private async Task<Goal?> _GetGoalAsync(int id)

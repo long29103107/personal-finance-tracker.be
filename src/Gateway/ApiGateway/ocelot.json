@@ -23,6 +23,27 @@
       ],
       "Key": "identity",
       "SwaggerKey": "identity"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/tracker/{everything}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post",
+        "Put",
+        "Patch",
+        "Delete",
+        "Option"
+      ],
+      "Key": "tracker",
+      "SwaggerKey": "tracker"
     }
   ],
   "SwaggerEndPoints": [
@@ -33,6 +54,16 @@
           "Name": "Identity API",
           "Version": "v1",
           "Url": "http://localhost:5001/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "tracker",
+      "Config": [
+        {
+          "Name": "Tracker API",
+          "Version": "v1",
+          "Url": "http://localhost:5002/swagger/v1/swagger.json"
         }
       ]
     }

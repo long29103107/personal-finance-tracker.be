@@ -10,6 +10,7 @@ using Shared.ExceptionHandler;
 using Shared.Serilog;
 using Serilog;
 using Serilog.Exceptions;
+using Shared.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,9 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
                    TrackerApiReference.Assembly)
               );
           });
+
+builder.Services.AddScoped<IScopedCache, ScopedCache>();
+builder.Services.AddScoped<CustomServiceFilter>();
 
 builder.Services.AddSwaggerGen(c =>
 {

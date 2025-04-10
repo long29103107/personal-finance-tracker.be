@@ -9,4 +9,5 @@ public interface ITransactionService
     Task<TransactionResponse> CreateAsync(TransactionCreateRequest request);
     Task<TransactionResponse> UpdateAsync(int id, TransactionUpdateRequest request);
     Task<bool> DeleteAsync(int id);
+    Task<TransactionDashboardResponse> GetDashboardAsync(DateTime? fromDate = null, DateTime? toDate = null);
 }

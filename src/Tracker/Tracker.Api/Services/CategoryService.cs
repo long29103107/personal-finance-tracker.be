@@ -10,19 +10,22 @@ using ValidationException = Shared.Domain.Exceptions.ValidationException;
 using Tracker.Api.Repositories.Abstractions.Views;
 using System.Collections.Generic;
 using Tracker.Api.DependencyInjection.Extensions.Mapping;
+using Shared.Domain;
 
 namespace Tracker.Api.Services;
 
 public class CategoryService(ICategoryRepository _cateRepo
     , IValidatorFactory _validatorFactory
     , IIdentityUsersVRepository _identityUsersRepo
-    , ITransactionRepository _transactionRepo) 
+    , ITransactionRepository _transactionRepo
+    , IScopedCache _scopedCache) 
     
     : ICategoryService
 {
 
     public async Task<IEnumerable<CategoryResponse>> GetListAsync()
     {
+        var a = _scopedCache;
         var result = await _cateRepo.FindAll()
             .Select(x => new CategoryResponse
             {
