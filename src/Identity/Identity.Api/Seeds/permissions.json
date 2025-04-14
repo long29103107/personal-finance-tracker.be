@@ -1,0 +1,12 @@
+﻿[
+  {
+    "scope": "post",
+    "operations": [
+      "read",
+      "edit",
+      "create",
+      "delete",
+      "upload"
+    ]
+  }
+]

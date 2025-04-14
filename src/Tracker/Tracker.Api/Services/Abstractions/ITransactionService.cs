@@ -1,4 +1,4 @@
-﻿using Tracker.Api.Dtos.Transaction;
+﻿using static Shared.Dtos.Tracker.TransactionDtos;
 
 namespace Tracker.Api.Services.Abstractions;
 

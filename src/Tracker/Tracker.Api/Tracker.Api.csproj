@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\Shared.Autofac\Shared.Autofac.csproj" />
     <ProjectReference Include="..\..\Shared\Shared.Domain\Shared.Domain.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Dtos\Shared.Dtos.csproj" />
     <ProjectReference Include="..\..\Shared\Shared.ExceptionHandler\Shared.ExceptionHandler.csproj" />
     <ProjectReference Include="..\..\Shared\Shared.Presentation\Shared.Presentation.csproj" />
     <ProjectReference Include="..\..\Shared\Shared.Repository\Shared.Repository.csproj" />

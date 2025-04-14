@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Shared.Domain.Exceptions;
-using Tracker.Api.Dtos.Account;
 using Tracker.Api.Entities;
 using Tracker.Api.Exceptions;
 using Tracker.Api.Repositories.Abstractions;
 using Tracker.Api.Services.Abstractions;
+using static Shared.Dtos.Tracker.AccountDtos;
 using ValidationException = Shared.Domain.Exceptions.ValidationException;
 
 namespace Tracker.Api.Services;
@@ -116,11 +116,11 @@ public class AccountService(IAccountRepository _accountRepo, IValidatorFactory _
 
         var result =  new AccountSummaryResponse
         {
-            Accounts = accounts.Select(a => new AccountSummaryDto
-            {
-                AccountName = a.Name,
-                Balance = a.Balance
-            }).ToList()
+            //Accounts = accounts.Select(a => new AccountSummaryDto
+            //{
+            //    AccountName = a.Name,
+            //    Balance = a.Balance
+            //}).ToList()
         };
 
         return result;

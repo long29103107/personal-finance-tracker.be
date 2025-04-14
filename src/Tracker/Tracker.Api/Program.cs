@@ -11,6 +11,7 @@ using Shared.Serilog;
 using Serilog;
 using Serilog.Exceptions;
 using Shared.Presentation;
+using Shared.Dtos.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 

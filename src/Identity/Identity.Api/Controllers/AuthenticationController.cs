@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Identity.Api.Dtos.Auth;
 using Identity.Api.Services.Abstractions;
 using Identity.Api.Attributes;
 using System.Security.Claims;
+using static Shared.Dtos.Identity.AuthDtos;
 
 namespace Identity.Api.Controllers;
 

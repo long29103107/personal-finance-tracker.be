@@ -1,14 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Shared.Service.Abstractions;
+using ILogger = Serilog.ILogger;
 
 namespace Shared.Service;
 
-public class BaseService<T> : IBaseService<T> where T : DbContext
+public class BaseService : IBaseService
 {
-    protected readonly T _context;
+    protected readonly ILogger _logger;
 
-    public BaseService(T context)
+    public BaseService(ILogger logger)
     {
-        _context = context;
+        _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
     }
 }

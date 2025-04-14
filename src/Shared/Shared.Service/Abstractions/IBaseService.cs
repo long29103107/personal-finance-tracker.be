@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Shared.Service.Abstractions;
 
-public interface IBaseService<T> where T : DbContext
+public interface IBaseService
 {
+   
 }

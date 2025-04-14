@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Shared.Serilog\Shared.Serilog.csproj" />
+  </ItemGroup>
+
 </Project>

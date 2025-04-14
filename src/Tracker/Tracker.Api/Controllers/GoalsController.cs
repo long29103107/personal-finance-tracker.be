@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Presentation;
-using Tracker.Api.Dtos.Goal;
 using Tracker.Api.Services.Abstractions;
+using static Shared.Dtos.Tracker.GoalDtos;
 
 namespace Tracker.Api.Controllers;
 

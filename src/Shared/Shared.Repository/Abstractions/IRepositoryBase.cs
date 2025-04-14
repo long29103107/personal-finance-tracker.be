@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Shared.Repository.Abstractions;
 public interface IRepositoryBase<T, TContext>
-    where T : BaseEntity
+    where T : class
     where TContext : DbContext
 {
     #region Query

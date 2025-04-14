@@ -1,4 +1,4 @@
-﻿using Tracker.Api.Dtos.Budget;
+﻿using static Shared.Dtos.Tracker.BudgetDtos;
 
 namespace Tracker.Api.Services.Abstractions;
 

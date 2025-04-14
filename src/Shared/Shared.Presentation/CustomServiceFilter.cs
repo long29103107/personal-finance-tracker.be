@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using Shared.Domain;
+using Shared.Dtos;
+using Shared.Dtos.Abstractions;
 
 namespace Shared.Presentation;
 public class CustomServiceFilter : IActionFilter
@@ -9,6 +10,11 @@ public class CustomServiceFilter : IActionFilter
     public CustomServiceFilter(IScopedCache scopedCache)
     {
         _scopedCache = scopedCache;
+    }
+
+    public void OnActionExecuted(ActionExecutedContext context)
+    {
+        throw new NotImplementedException();
     }
 
     public void OnActionExecuting(ActionExecutingContext context)

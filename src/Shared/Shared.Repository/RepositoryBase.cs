@@ -1,14 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.Domain.Abstractions;
+using Shared.Dtos.Extensions;
 using Shared.Repository.Abstractions;
 using System.Linq.Expressions;
-using Microsoft.IdentityModel.Tokens;
-using Shared.Lib;
-
 namespace Shared.Repository;
 
 public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
-    where T : BaseEntity
+    where T : class
     where TContext : DbContext
 {
     protected readonly TContext _context;

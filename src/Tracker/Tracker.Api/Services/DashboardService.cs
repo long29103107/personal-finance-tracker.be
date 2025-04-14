@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tracker.Api.Dtos.Dashboard;
 using Tracker.Api.Repositories.Abstractions;
 using Tracker.Api.Services.Abstractions;
+using static Shared.Dtos.Tracker.DashboardDtos;
 
 namespace Tracker.Api.Services;
 

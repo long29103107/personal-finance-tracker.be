@@ -1,0 +1,17 @@
+﻿[
+  {
+    "code": "super-admin",
+    "weight": 100,
+    "name": "Super Admin"
+  },
+  {
+    "code": "admin",
+    "weight": 90,
+    "name": "Admin"
+  },
+  {
+    "code": "member",
+    "weight": 80,
+    "name": "Member"
+  }
+]

@@ -1,4 +1,4 @@
-﻿using Tracker.Api.Dtos.Dashboard;
+﻿using static Shared.Dtos.Tracker.DashboardDtos;
 
 namespace Tracker.Api.Services.Abstractions;
 

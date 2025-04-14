@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.Domain.Abstractions;
+using Shared.Dtos.Extensions;
 using Shared.Repository.Abstractions;
 using System.Linq.Expressions;
-using Microsoft.IdentityModel.Tokens;
-using Shared.Lib;
 
 namespace Shared.Repository;
 

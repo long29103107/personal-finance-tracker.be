@@ -1,0 +1,26 @@
+﻿[
+  {
+    "code": "read",
+    "name": "Read"
+  },
+  {
+    "code": "edit",
+    "name": "Edit"
+  },
+  {
+    "code": "create",
+    "name": "Create"
+  },
+  {
+    "code": "delete",
+    "name": "Delete"
+  },
+  {
+    "code": "upload",
+    "name": "Upload"
+  },
+  {
+    "code": "export",
+    "name": "Export"
+  }
+]

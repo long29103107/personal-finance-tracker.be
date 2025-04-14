@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Tracker.Api.Dtos.Category;
 using Tracker.Api.Entities;
 using Tracker.Api.Exceptions;
 using Tracker.Api.Repositories.Abstractions;
@@ -8,9 +7,10 @@ using FluentValidation;
 using Shared.Domain.Exceptions;
 using ValidationException = Shared.Domain.Exceptions.ValidationException;
 using Tracker.Api.Repositories.Abstractions.Views;
-using System.Collections.Generic;
-using Tracker.Api.DependencyInjection.Extensions.Mapping;
-using Shared.Domain;
+using Tracker.Api.DependencyInjection.Extensions.Mappings;
+using Shared.Dtos.Abstractions;
+using static Shared.Dtos.Tracker.CategoryDtos;
+
 
 namespace Tracker.Api.Services;
 
