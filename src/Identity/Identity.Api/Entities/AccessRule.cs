@@ -1,13 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Shared.Domain.Abstractions;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Identity.Api.Entities;
 
-public class AccessRule
+public class AccessRule : BaseEntity
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
 
     [ForeignKey("Permission")]
     public int? PermissionId { get; set; }

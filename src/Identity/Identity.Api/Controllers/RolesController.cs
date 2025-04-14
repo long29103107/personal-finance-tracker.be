@@ -38,12 +38,6 @@ public class RolesController : CustomControllerBase
         return GetResponse(await _service.UpdateAsync(id, request));
     }
 
-    [HttpPatch("{id}")]
-    public async Task<IActionResult> UpdatePartialAsync([FromRoute] int id, [FromBody] JsonPathRequest<RoleUpdatePartialRequest> request)
-    {
-        return GetResponse(await _service.UpdatePartialAsync(id, request));
-    }
-
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync([FromRoute] int id)
     {

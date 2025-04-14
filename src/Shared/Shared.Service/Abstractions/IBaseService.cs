@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Shared.Service.Abstractions;
 
-public interface IBaseService
+public interface IBaseService<TRepoManager>
 {
    
 }

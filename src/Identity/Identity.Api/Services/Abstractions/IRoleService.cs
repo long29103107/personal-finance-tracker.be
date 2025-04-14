@@ -1,10 +1,11 @@
 ﻿using Identity.Api.Entities;
+using Identity.Api.Repositories.Abstractions;
 using Shared.Service.Abstractions;
 using static Shared.Dtos.Identity.PermissionDtos;
 using static Shared.Dtos.Identity.RoleDtos;
 namespace Identity.Api.Services.Abstractions;
 
-public interface IRoleService : IBaseService
+public interface IRoleService : IBaseService<IRepositoryManager>
 {
     IQueryable<Role> _RoleIgnoreGlobalFilter();
     Task<IEnumerable<RoleResponse>> GetListAsync(RoleListRequest request);

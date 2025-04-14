@@ -1,4 +1,5 @@
-﻿using Identity.Api.Services.Abstractions;
+﻿using Identity.Api.Repositories.Abstractions;
+using Identity.Api.Services.Abstractions;
 using Shared.Service;
 using static Shared.Dtos.Identity.AuthDtos;
 using static Shared.Dtos.Identity.TokenDtos;
@@ -6,7 +7,7 @@ using ILogger= Serilog.ILogger;
 
 namespace Identity.Api.Services;
 
-public class AuthService : BaseService, IAuthService
+public class AuthService : BaseService<IRepositoryManager>, IAuthService
 {
     private readonly IUserService _userService;
     private readonly ITokenService _tokenService;

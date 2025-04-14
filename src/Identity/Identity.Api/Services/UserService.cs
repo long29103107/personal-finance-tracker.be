@@ -12,7 +12,7 @@ using static Shared.Dtos.Identity.UserDtos;
 
 namespace Identity.Api.Services;
 
-public class UserService : BaseService, IUserService
+public class UserService : BaseService<IRepositoryManager>, IUserService
 {
     private readonly UserManager<User> _userManager;
     private readonly IUserRepository _userRepo;

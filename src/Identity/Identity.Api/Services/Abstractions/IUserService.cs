@@ -1,10 +1,11 @@
 ﻿using Identity.Api.Entities;
+using Identity.Api.Repositories.Abstractions;
 using Shared.Service.Abstractions;
 using static Shared.Dtos.Identity.UserDtos;
 
 namespace Identity.Api.Services.Abstractions;
 
-public interface IUserService : IBaseService
+public interface IUserService : IBaseService<IRepositoryManager>
 {
     public Task<User> CreateOrFindUserAsync(UserCreateOrFindRequest request);
     Task<UserResponse> GetAsync(int id);

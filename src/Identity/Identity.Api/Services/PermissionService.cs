@@ -1,15 +1,18 @@
-﻿using Identity.Api.Services.Abstractions;
+﻿using Identity.Api.Repositories.Abstractions;
+using Identity.Api.Services.Abstractions;
+using Microsoft.EntityFrameworkCore;
 using Shared.Service;
 using static Shared.Dtos.Identity.PermissionDtos;
 using ILogger = Serilog.ILogger;
 
 namespace Identity.Api.Services;
 
-public class PermissionService : BaseService, IPermissionService
+public class PermissionService : BaseService<IRepositoryManager>, IPermissionService
 {
     private readonly IValidatorFactory _validatorFactory;
-    public PermissionService(IValidatorFactory validatorFactory, ILogger logger)
-        : base(logger)
+
+    public PermissionService(ILogger logger, IRepositoryManager repoManager, IValidatorFactory validatorFactory)
+        : base(logger, repoManager)
     {
         _validatorFactory = validatorFactory;
     }
