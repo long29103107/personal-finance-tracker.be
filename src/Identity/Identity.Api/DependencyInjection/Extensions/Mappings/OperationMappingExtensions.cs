@@ -10,7 +10,9 @@ public static class OperationMappingExtensions
         return new Operation()
         {
             Code = OperationRequest.Code,
-            Name = OperationRequest.Name
+            Name = OperationRequest.Name,
+            CreatedBy = "seed",
+            CreatedAt = DateTime.UtcNow,
         };
     }
 

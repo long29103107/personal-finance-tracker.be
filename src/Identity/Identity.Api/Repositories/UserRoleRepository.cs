@@ -9,4 +9,16 @@ public class UserRoleRepository : RepositoryBase<UserRole, CustomIdentityDbConte
     public UserRoleRepository(CustomIdentityDbContext context) : base(context)
     {
     }
+
+    public override void BeforeAdd(UserRole entity)
+    {
+        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedBy = string.Empty;
+    }
+
+    public override void BeforeUpdate(UserRole entity)
+    {
+        entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedBy = string.Empty;
+    }
 }

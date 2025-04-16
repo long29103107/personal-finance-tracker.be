@@ -5,6 +5,7 @@ using static Shared.Dtos.Identity.SeedDtos;
 
 namespace MyBlog.Identity.Api.Controllers;
 
+[ApiExplorerSettings(IgnoreApi = true)]
 public class SeedController : CustomControllerBase
 {
     private readonly ISeedService _seedService;

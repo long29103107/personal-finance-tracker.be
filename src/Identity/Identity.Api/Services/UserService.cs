@@ -39,7 +39,9 @@ public class UserService : BaseService<IRepositoryManager>, IUserService
         {
             UserName = request.Email,
             Email = request.Email,
-            EmailConfirmed = true
+            EmailConfirmed = true,
+            CreatedAt = DateTime.UtcNow,
+            CreatedBy = "LoginGoogle",
         };
 
         var result = await _userManager.CreateAsync(user);

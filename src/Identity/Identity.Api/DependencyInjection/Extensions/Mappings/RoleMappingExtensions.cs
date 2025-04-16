@@ -13,7 +13,12 @@ public static class RoleMappingExtensions
         return new Role()
         {
             Code = request.Code,
-            Name = request.Name
+            Name = request.Name,
+            Weight = request.Weight,
+            IsLocked = request.IsLocked,
+            NormalizedName = request.NormalizedName,
+            CreatedBy = "seed",
+            CreatedAt = DateTime.UtcNow,
         };
     }
 

@@ -13,5 +13,6 @@ public interface IUnitOfWork<TContext> : IDisposable
     Task RollbackTransactionAsync();
     Task TruncateAsync(string tableName);
     void DetachEntities();
+    void SetAuditLog(bool needToAuditLog);
     #endregion
 }

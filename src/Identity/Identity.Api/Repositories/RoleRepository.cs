@@ -9,4 +9,16 @@ public class RoleRepository : RepositoryBase<Role, CustomIdentityDbContext>, IRo
     public RoleRepository(CustomIdentityDbContext context) : base(context)
     {
     }
+
+    public override void BeforeAdd(Role entity)
+    {
+        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedBy = string.Empty;
+    }
+
+    public override void BeforeUpdate(Role entity)
+    {
+        entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedBy = string.Empty;
+    }
 }

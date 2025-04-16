@@ -17,7 +17,7 @@ public static class PermissionMappingExtensions
             CreatedAt = permission.CreatedAt,
             UpdatedAt = permission.UpdatedAt,
             CreatedBy = permission.CreatedBy,
-            UpdatedBy = permission.UpdatedBy
+            UpdatedBy = permission.UpdatedBy,
         };
     }
 }

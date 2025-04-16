@@ -1,5 +1,9 @@
 ﻿using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Shared.Serilog;
+using Serilog.Exceptions;
+using FluentValidation.AspNetCore;
 
 namespace Identity.Api.DependencyInjection.Extensions;
 
@@ -39,6 +43,27 @@ public static class HostingExtensions
             });
                 });
 
+        builder.Services.AddSerilogMiddleware();
+
+        Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Information()
+                   .Enrich.FromLogContext()
+                   .Enrich.WithExceptionDetails()
+                   .Enrich.WithMachineName()
+                   .WriteTo.Console()
+                   .CreateLogger();
+
+        builder.Host.UseSerilog((context, loggerConfig)
+            => loggerConfig.ReadFrom.Configuration(context.Configuration));
+        builder.Host.ConfigureLogging(HostBuilderExtensions.ConfigureLogging);
+
+
+        builder.Services.AddFluentValidation(v =>
+        {
+            v.ImplicitlyValidateChildProperties = true;
+            v.ImplicitlyValidateRootCollectionElements = true;
+            v.RegisterValidatorsFromAssembly(IdentityApiReference.Assembly);
+        });
 
         builder.Host.AddAutofac();
         builder.Services.AddServiceLifetime();

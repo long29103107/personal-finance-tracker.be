@@ -9,4 +9,16 @@ public class UserRepository : RepositoryBase<User, CustomIdentityDbContext>, IUs
     public UserRepository(CustomIdentityDbContext context) : base(context)
     {
     }
+
+    public override void BeforeAdd(User entity)
+    {
+        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedBy = string.Empty;
+    }
+
+    public override void BeforeUpdate(User entity)
+    {
+        entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedBy = string.Empty;
+    }
 }

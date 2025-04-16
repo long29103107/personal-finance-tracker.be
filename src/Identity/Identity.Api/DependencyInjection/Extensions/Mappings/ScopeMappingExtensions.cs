@@ -10,7 +10,9 @@ public static class ScopeMappingExtensions
         return new Scope()
         {
             Code = scopeRequest.Code,
-            Name = scopeRequest.Name
+            Name = scopeRequest.Name,
+            CreatedBy = "seed",
+            CreatedAt = DateTime.UtcNow,
         };
     }
 

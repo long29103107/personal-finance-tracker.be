@@ -9,7 +9,7 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     where TContext : DbContext
 {
     protected readonly TContext _context;
-    protected readonly bool _needSetAuditLog = true;
+    private bool _needSetAuditLog = true;
 
     public RepositoryBase(TContext context)
     {
@@ -199,6 +199,11 @@ public abstract class RepositoryBase<T, TContext> : IRepositoryBase<T, TContext>
     {
         _context.Dispose();
 
+    }
+
+    public void SetAuditLog(bool needToAuditLog)
+    {
+        _needSetAuditLog = needToAuditLog;
     }
     #endregion
 }

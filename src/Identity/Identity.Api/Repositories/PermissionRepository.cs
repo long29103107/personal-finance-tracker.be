@@ -9,4 +9,16 @@ public class PermissionRepository : RepositoryBase<Permission, CustomIdentityDbC
     public PermissionRepository(CustomIdentityDbContext context) : base(context)
     {
     }
+
+    public override void BeforeAdd(Permission entity)
+    {
+        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedBy = string.Empty;
+    }
+
+    public override void BeforeUpdate(Permission entity)
+    {
+        entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedBy = string.Empty;
+    }
 }

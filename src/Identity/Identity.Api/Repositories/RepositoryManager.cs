@@ -1,6 +1,5 @@
 ﻿using Identity.Api.Entities;
 using Identity.Api.Repositories.Abstractions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore;
 using Shared.Repository;
@@ -9,7 +8,6 @@ namespace Identity.Api.Repositories;
 
 public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositoryManager
 {
-
     private readonly CustomIdentityDbContext _context;
 
     public RepositoryManager(CustomIdentityDbContext context) : base(context)
@@ -61,6 +59,7 @@ public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositor
             {
                 _permission = new PermissionRepository(_context);
             }
+            _permission.SetAuditLog(_needSetAuditLog);
 
             return _permission;
         }
@@ -74,6 +73,7 @@ public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositor
             {
                 _operation = new OperationRepository(_context);
             }
+            _operation.SetAuditLog(_needSetAuditLog);
 
             return _operation;
         }
@@ -86,6 +86,7 @@ public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositor
             {
                 _accessRule = new AccessRuleRepository(_context);
             }
+            _accessRule.SetAuditLog(_needSetAuditLog);
 
             return _accessRule;
         }
@@ -99,6 +100,7 @@ public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositor
             {
                 _scope = new ScopeRepository(_context);
             }
+            _scope.SetAuditLog(_needSetAuditLog);
 
             return _scope;
         }
@@ -112,6 +114,7 @@ public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositor
             {
                 _role = new RoleRepository(_context);
             }
+            _role.SetAuditLog(_needSetAuditLog);
 
             return _role;
         }
@@ -125,6 +128,7 @@ public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositor
             {
                 _user = new UserRepository(_context);
             }
+            _user.SetAuditLog(_needSetAuditLog);
 
             return _user;
         }
@@ -138,6 +142,7 @@ public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositor
             {
                 _userRole = new UserRoleRepository(_context);
             }
+            _userRole.SetAuditLog(_needSetAuditLog);
 
             return _userRole;
         }

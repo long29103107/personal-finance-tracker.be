@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Shared.Domain.Abstractions;
 
 namespace Identity.Api.Entities;
 
-public class Role : IdentityRole<int>//, IDateTracking, IUserTracking
+public class Role : IdentityRole<int>, IDateTimeTracking, IAuthorTracking
 {
     public string CreatedBy { get; set; } = string.Empty!;
     public string UpdatedBy { get; set; } = string.Empty!;

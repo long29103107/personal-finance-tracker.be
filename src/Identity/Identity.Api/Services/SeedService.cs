@@ -46,6 +46,8 @@ public class SeedService(ILogger logger, IUserService userService, IValidatorFac
 
     private async Task _ReSeedSecurityAsync()
     {
+        _repoManager.SetAuditLog(false);
+
         var operationRequests = await _ReadSeedJsonFileAsync<OperationRequest>("operations");
         var permissionRequests = await _ReadSeedJsonFileAsync<PermissionRequest>("permissions");
         var roleRequests = await _ReadSeedJsonFileAsync<RoleRequest>("roles");
@@ -129,6 +131,8 @@ public class SeedService(ILogger logger, IUserService userService, IValidatorFac
 
             existingScope.Code = request.Code;
             existingScope.Name = request.Name;
+            existingScope.UpdatedAt = DateTime.UtcNow;
+            existingScope.UpdatedBy = "seed";
         }
 
         //Case create
@@ -157,6 +161,8 @@ public class SeedService(ILogger logger, IUserService userService, IValidatorFac
 
             existingOperation.Code = request.Code;
             existingOperation.Name = request.Name;
+            existingOperation.UpdatedAt = DateTime.UtcNow;
+            existingOperation.UpdatedBy = "seed";
         }
 
         //Case create
@@ -212,6 +218,8 @@ public class SeedService(ILogger logger, IUserService userService, IValidatorFac
             {
                 Operation = operation,
                 Scope = scope,
+                CreatedAt = DateTime.UtcNow,
+                CreatedBy = "seed",
             };
             permissionsNeedToCreate.Add(permissionNeedToCreate);
             _repoManager.Permission.Add(permissionNeedToCreate);
@@ -241,6 +249,8 @@ public class SeedService(ILogger logger, IUserService userService, IValidatorFac
             existingRole.IsLocked = request.IsLocked;
             existingRole.Weight = request.Weight;
             existingRole.NormalizedName = request.NormalizedName;
+            existingRole.UpdatedAt = DateTime.UtcNow;
+            existingRole.UpdatedBy = "seed";
         }
 
         //Case create
@@ -283,6 +293,8 @@ public class SeedService(ILogger logger, IUserService userService, IValidatorFac
                 existingAccessRule.Mode = accRuleNeedToUpdate?.Mode ?? false;
                 existingAccessRule.PermissionId = accRuleNeedToUpdate?.PermissionId;
                 existingAccessRule.RoleId = accRuleNeedToUpdate?.RoleId;
+                existingAccessRule.UpdatedAt = DateTime.UtcNow;
+                existingAccessRule.UpdatedBy = "seed";
             }
 
             _repoManager.AccessRule.UpdateRange(existingAccessRules);
@@ -293,8 +305,12 @@ public class SeedService(ILogger logger, IUserService userService, IValidatorFac
             x.RoleId == y.RoleId &&
             x.PermissionId == y.PermissionId));
 
+        foreach (var existingAccessRule in newAccessRules)
+        {
+            existingAccessRule.CreatedAt = DateTime.UtcNow;
+            existingAccessRule.CreatedBy = "seed";
+        }
+
         _repoManager.AccessRule.AddRange(newAccessRules);
     }
 }
-
-

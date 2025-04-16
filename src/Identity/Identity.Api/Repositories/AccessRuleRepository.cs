@@ -9,4 +9,16 @@ public class AccessRuleRepository : RepositoryBase<AccessRule, CustomIdentityDbC
     public AccessRuleRepository(CustomIdentityDbContext context) : base(context)
     {
     }
+
+    public override void BeforeAdd(AccessRule entity)
+    {
+        entity.CreatedAt = DateTime.UtcNow;
+        entity.CreatedBy = string.Empty;
+    }
+
+    public override void BeforeUpdate(AccessRule entity)
+    {
+        entity.UpdatedAt = DateTime.UtcNow;
+        entity.UpdatedBy = string.Empty;
+    }
 }

@@ -8,6 +8,7 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext>
     where TContext : DbContext
 {
     protected readonly TContext _context;
+    protected bool _needSetAuditLog = true;
 
     public UnitOfWork(TContext context)
     {
@@ -48,6 +49,11 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext>
     public void DetachEntities()
     {
         _context.ChangeTracker.Clear();
+    }
+
+    public void SetAuditLog(bool needToAuditLog)
+    {
+        _needSetAuditLog = needToAuditLog;
     }
     #endregion
 }
