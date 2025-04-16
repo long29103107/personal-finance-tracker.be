@@ -11,5 +11,7 @@ public interface IUnitOfWork<TContext> : IDisposable
     Task<IDbContextTransaction> BeginTransactionAsync();
     Task EndTransactionAsync();
     Task RollbackTransactionAsync();
+    Task TruncateAsync(string tableName);
+    void DetachEntities();
     #endregion
 }

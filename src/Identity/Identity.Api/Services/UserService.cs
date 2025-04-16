@@ -9,6 +9,9 @@ using Identity.Api.Repositories.Abstractions;
 using Shared.Service;
 using ILogger = Serilog.ILogger;
 using static Shared.Dtos.Identity.UserDtos;
+using FilteringAndSortingExpression.Extensions;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Identity.Api.Services;
 
@@ -17,7 +20,8 @@ public class UserService : BaseService<IRepositoryManager>, IUserService
     private readonly UserManager<User> _userManager;
     private readonly IUserRepository _userRepo;
 
-    public UserService(ILogger logger, UserManager<User> userManager, IUserRepository userRepo) : base(logger)
+    public UserService(ILogger logger, UserManager<User> userManager, IUserRepository userRepo, IRepositoryManager repoManager) 
+        : base(logger, repoManager)
     {
         _userManager = userManager;
         _userRepo = userRepo;
@@ -183,9 +187,9 @@ public class UserService : BaseService<IRepositoryManager>, IUserService
     public async Task<IEnumerable<UserResponse>> GetListAsync(UserListRequest request)
     {
         var result = await _UserIgnoreGlobalFilter()
-           .Filter(request)
-           .ProjectTo<UserResponse>(_mapper.ConfigurationProvider)
-           .ToListAsync();
+            .Select(x => x.ToUserResponse())
+            .Filter(request)
+            .ToListAsync();
 
         return result;
     }
@@ -207,11 +211,16 @@ public class UserService : BaseService<IRepositoryManager>, IUserService
             throw new BadRequestException("Existing role has code or name!");
         }
 
-        _mapper.Map<UserUpdateRequest, User>(request, user);
+        user.UserName = request.UserName;
+        user.Email = request.Email;
+        user.PhoneNumber = request.PhoneNumber;
+        user.IsLocked = request.IsLocked;
+        user.IsActive = request.IsActive;
+
         _repoManager.User.Update(user);
         await _repoManager.SaveAsync();
 
-        return _mapper.Map<UserResponse>(user);
+        return user.ToUserResponse();
     }
     #endregion
 

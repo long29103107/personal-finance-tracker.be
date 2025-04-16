@@ -12,7 +12,8 @@ public class AuthService : BaseService<IRepositoryManager>, IAuthService
     private readonly IUserService _userService;
     private readonly ITokenService _tokenService;
 
-    public AuthService(IUserService userService, ITokenService tokenService, ILogger logger) : base(logger)
+    public AuthService(IUserService userService, ITokenService tokenService, ILogger logger, IRepositoryManager repoManager) 
+        : base(logger, repoManager)
     {
         _userService = userService;
         _tokenService = tokenService;

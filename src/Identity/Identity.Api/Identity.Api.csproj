@@ -8,17 +8,27 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Serilog.AspNetCore" />
 		<PackageReference Include="Swashbuckle.AspNetCore" />
+		<PackageReference Include="FluentValidation.AspNetCore" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Shared\FilteringAndSorting\FilteringAndSortingExpression.csproj" />
+	  <ProjectReference Include="..\..\Shared\Shared.Autofac\Shared.Autofac.csproj" />
 	  <ProjectReference Include="..\..\Shared\Shared.Domain\Shared.Domain.csproj" />
 	  <ProjectReference Include="..\..\Shared\Shared.Dtos\Shared.Dtos.csproj" />
 	  <ProjectReference Include="..\..\Shared\Shared.Presentation\Shared.Presentation.csproj" />

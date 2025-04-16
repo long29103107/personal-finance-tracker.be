@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Identity.Api.DependencyInjection.Extensions;
 
@@ -6,7 +7,7 @@ public static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddNewtonsoftJson();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(c =>
         {
@@ -38,6 +39,8 @@ public static class HostingExtensions
             });
                 });
 
+
+        builder.Host.AddAutofac();
         builder.Services.AddServiceLifetime();
         builder.Services.AddAuthenAuthorService(builder.Configuration);
         builder.Services.AddRouting(options => options.LowercaseUrls = true);

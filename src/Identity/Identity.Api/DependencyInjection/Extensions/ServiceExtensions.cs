@@ -8,6 +8,13 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Identity.Api.Entities;
 using Microsoft.AspNetCore.Identity;
+using Autofac.Extensions.DependencyInjection;
+using Autofac;
+using MyBlog.Shared.Autofac.Modules;
+using Identity.Api.Repositories.Abstractions;
+using Identity.Api.Repositories;
+using Shared.Dtos.Abstractions;
+using Shared.Presentation;
 
 namespace Identity.Api.DependencyInjection.Extensions;
 
@@ -69,11 +76,20 @@ public static class ServiceExtensions
 
     public static IServiceCollection AddServiceLifetime(this IServiceCollection services)
     {
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<ICustomAuthService, CustomAuthService>();
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IScopedCache, ScopedCache>();
+        services.AddScoped<CustomServiceFilter>();
 
         return services;
+    }
+    public static void AddAutofac(this ConfigureHostBuilder host)
+    {
+        host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+               .ConfigureContainer<ContainerBuilder>(container =>
+               {
+                   container.RegisterModule(new GeneralModule<IRepositoryManager, RepositoryManager>(
+                       IdentityApiReference.Assembly,
+                        IdentityApiReference.Assembly)
+                   );
+               });
     }
 }

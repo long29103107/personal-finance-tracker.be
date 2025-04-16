@@ -49,14 +49,14 @@ public static class PermissionDtos
     public sealed class PermissionListResponse : AuditResponse
     {
         public string Code { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; }
 
     }
 
     public sealed class PermissionResponse : AuditResponse
     {
         public string Code { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; }
     }
 
     public sealed class PermissionListByRoleResponse : AuditResponse

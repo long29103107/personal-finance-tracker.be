@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Repository.Abstractions;
 
 namespace Shared.Repository;
+
 public class UnitOfWork<TContext> : IUnitOfWork<TContext>
     where TContext : DbContext
 {
@@ -37,6 +38,16 @@ public class UnitOfWork<TContext> : IUnitOfWork<TContext>
     public async Task RollbackTransactionAsync()
     {
         await _context.Database.RollbackTransactionAsync();
+    }
+
+    public async Task TruncateAsync(string tableName)
+    {
+        await _context.Database.ExecuteSqlRawAsync($"DELETE FROM {tableName}");
+    }
+
+    public void DetachEntities()
+    {
+        _context.ChangeTracker.Clear();
     }
     #endregion
 }

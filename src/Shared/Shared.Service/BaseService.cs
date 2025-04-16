@@ -14,6 +14,6 @@ public class BaseService<TRepoManager> : IBaseService<TRepoManager>
     public BaseService(ILogger logger, TRepoManager repoManager)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(_logger));
-        _repoManager = repoManager;
+        _repoManager = repoManager ?? throw new ArgumentNullException(nameof(_repoManager));
     }
 }

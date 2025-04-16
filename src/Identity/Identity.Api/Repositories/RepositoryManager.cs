@@ -28,11 +28,6 @@ public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositor
         await _context.SaveChangesAsync();
     }
 
-    public void DetachEntities()
-    {
-        _context.ChangeTracker.Clear();
-    }
-
     public Task<IDbContextTransaction> BeginTransactionAsync()
     {
         return _context.Database.BeginTransactionAsync();
@@ -47,10 +42,6 @@ public class RepositoryManager : UnitOfWork<CustomIdentityDbContext>, IRepositor
     public async Task RollbackTransactionAsync()
     {
         await _context.Database.RollbackTransactionAsync();
-    }
-    public async Task TruncateAsync(string tableName)
-    {
-        await _context.Database.ExecuteSqlRawAsync($"DELETE FROM {tableName}");
     }
     #endregion
 

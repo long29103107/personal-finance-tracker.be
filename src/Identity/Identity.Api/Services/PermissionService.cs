@@ -1,4 +1,9 @@
-﻿using Identity.Api.Repositories.Abstractions;
+﻿using FilteringAndSortingExpression.Extensions;
+using FluentValidation;
+using Identity.Api.DependencyInjection.Extensions.Helpers;
+using Identity.Api.DependencyInjection.Extensions.Mappings;
+using Identity.Api.Exceptions;
+using Identity.Api.Repositories.Abstractions;
 using Identity.Api.Services.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Shared.Service;
@@ -20,7 +25,16 @@ public class PermissionService : BaseService<IRepositoryManager>, IPermissionSer
     public async Task<PermissionResponse> GetAsync(int id)
     {
         var result = await _repoManager.Permission.FindByCondition(x => x.Id == id)
-            .ProjectTo<PermissionResponse>(_mapper.ConfigurationProvider)
+            .Select(x => new PermissionResponse
+            {
+                Id = x.Id,
+                Code = x.GetPermissionCode(),
+                Name = x.GetPermissionName(),
+                CreatedAt = x.CreatedAt,
+                UpdatedAt = x.UpdatedAt,
+                CreatedBy = x.CreatedBy,
+                UpdatedBy = x.UpdatedBy
+            })
             .FirstOrDefaultAsync()
             ?? throw new PermissionException.NotFound(id);
 
@@ -30,9 +44,9 @@ public class PermissionService : BaseService<IRepositoryManager>, IPermissionSer
     public async Task<IEnumerable<PermissionResponse>> GetListAsync(PermissionListRequest request)
     {
         var result = await _repoManager.Permission.FindAll()
-           .ProjectTo<PermissionResponse>(_mapper.ConfigurationProvider)
-           .Filter(request)
-           .ToListAsync();
+            .Select(x => x.ToPermissionResponse())
+            .Filter(request)
+            .ToListAsync();
 
         return result;
     }
